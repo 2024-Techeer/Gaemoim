@@ -8,6 +8,10 @@ services:
     restart: always
     ports:
       - "8085:8085"
+    environment:
+      - GMAIL_USERNAME=rlaclfjqj1@gmail.com
+      - GMAIL_PASSWORD=sunny1590!
+
 
   mysqldb:
     image: mysql:latest
@@ -27,6 +31,7 @@ services:
       PMA_ARBITRARY: 1
       PMA_HOST: mysqldb
       PMA_PORT: 3306
+
 
 
 volumes:

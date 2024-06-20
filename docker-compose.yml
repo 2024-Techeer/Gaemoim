@@ -8,6 +8,20 @@ services:
     restart: always
     ports:
       - "8085:8085"
+    networks:
+      - app-tier
+
+  frontend:
+    build:
+      context: ./Frontend
+    stdin_open: true
+    command: sh -c "yarn dev --host"
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend:/app/frontend
+    networks:
+      - app-tier
 
   mysqldb:
     image: mysql:latest
@@ -17,6 +31,8 @@ services:
       - '3306:3306'
     volumes:
       - 'mysqldb-data:/var/lib/mysql'
+    networks:
+      - app-tier
 
   phpmyadmin:
     image: phpmyadmin
@@ -27,14 +43,12 @@ services:
       PMA_ARBITRARY: 1
       PMA_HOST: mysqldb
       PMA_PORT: 3306
-
+    networks:
+      - app-tier
 
 volumes:
   mysqldb-data:
 
-#  frontend:
-#    build:
-#      context: ./Frontend
-#    ports:
-#      - "3000:3000"
-#    command: yarn start
+networks:
+  app-tier:
+    driver: bridge
